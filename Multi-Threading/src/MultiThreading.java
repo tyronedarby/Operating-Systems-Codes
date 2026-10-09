@@ -1,3 +1,8 @@
+/*
+Author: Tyrone Darby
+Class: Operating Systems
+*/
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,7 +20,7 @@ public class MultiThreading {
 
     public static void main(String[] args) {
 
-        String fileName = "xyz";
+        String fileName = "xyz.txt";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
 
@@ -59,7 +64,7 @@ public class MultiThreading {
             }
 
         } catch (IOException e) {
-            System.out.println("Error reading file xyz.");
+            System.out.println("Error reading file xyz.txt.");
             System.out.println(e.getMessage());
         }
     }
@@ -68,8 +73,7 @@ public class MultiThreading {
 
         String[] sections = new String[3];
 
-        Pattern pattern =
-                Pattern.compile("(\\*{1,3})([^$]*)\\$");
+        Pattern pattern = Pattern.compile("(\\*{1,3})([^$]*)\\$");
 
         Matcher matcher = pattern.matcher(record);
 
@@ -160,8 +164,7 @@ class Person extends Thread {
 
         Map<Character, String> fields = new HashMap<>();
 
-        Pattern markerPattern =
-                Pattern.compile("(?<![A-Za-z])([FLMD])");
+        Pattern markerPattern = Pattern.compile("(?<![A-Za-z])([FLMD])");
 
         Matcher matcher = markerPattern.matcher(text);
 
@@ -186,8 +189,7 @@ class Person extends Thread {
                 end = text.length();
             }
 
-            String value =
-                    text.substring(start, end).trim();
+            String value = text.substring(start, end).trim();
 
             fields.put(markers.get(i), value);
         }
@@ -209,8 +211,7 @@ class Person extends Thread {
 
             int month = monthToNumber(parts[1].trim());
 
-            int year =
-                    Integer.parseInt(
+            int year = Integer.parseInt(
                             parts[2]
                                     .trim()
                                     .replaceAll("[^0-9]", "")
@@ -220,18 +221,15 @@ class Person extends Thread {
                 return "Unknown";
             }
 
-            LocalDate birthDate =
-                    LocalDate.of(year, month, day);
+            LocalDate birthDate = LocalDate.of(year, month, day);
 
-            LocalDate today =
-                    LocalDate.now();
+            LocalDate today = LocalDate.now();
 
             if (birthDate.isAfter(today)) {
                 return "Unknown";
             }
 
-            Period period =
-                    Period.between(birthDate, today);
+            Period period = Period.between(birthDate, today);
 
             return period.getYears()
                     + "y, "
@@ -251,16 +249,13 @@ class Person extends Thread {
      */
     private int wordToNumber(String value) {
 
-        value =
-                value.toLowerCase()
-                        .trim();
+        value = value.toLowerCase().trim();
 
         /*
          * Handles something such as B3 in the supplied
          * assignment data by locating the numeric part.
          */
-        Matcher numberMatcher =
-                Pattern.compile("\\d+").matcher(value);
+        Matcher numberMatcher = Pattern.compile("\\d+").matcher(value);
 
         if (numberMatcher.find()) {
             return Integer.parseInt(numberMatcher.group());
@@ -310,9 +305,7 @@ class Person extends Thread {
      */
     private int monthToNumber(String monthText) {
 
-        monthText =
-                monthText.toLowerCase()
-                        .trim();
+        monthText = monthText.toLowerCase().trim();
 
         // Numeric month
         try {
@@ -328,7 +321,7 @@ class Person extends Thread {
 
         /*
          * startsWith is intentional because the supplied
-         * xyz data contains spellings such as "Januarry".
+         * xyz.txt data contains spellings such as "Januarry".
          */
         if (monthText.startsWith("jan")) {
             return Month.JANUARY.getValue();
@@ -393,8 +386,7 @@ class Scores extends Thread {
     @Override
     public void run() {
 
-        List<Double> scores =
-                getScores(section);
+        List<Double> scores = getScores(section);
 
         if (scores.isEmpty()) {
 
@@ -410,21 +402,11 @@ class Scores extends Thread {
             return;
         }
 
-        double average =
-                calculateAverage(scores);
+        double average = calculateAverage(scores);
 
-        double standardDeviation =
-                calculateStandardDeviation(
-                        scores,
-                        average
-                );
+        double standardDeviation = calculateStandardDeviation(scores, average);
 
-        List<Double> outliers =
-                findOutliers(
-                        scores,
-                        average,
-                        standardDeviation
-                );
+        List<Double> outliers = findOutliers(scores, average, standardDeviation);
 
         String output =
                 "Scores - Section 2 is: "
@@ -445,20 +427,15 @@ class Scores extends Thread {
 
     private List<Double> getScores(String text) {
 
-        List<Double> scores =
-                new ArrayList<>();
+        List<Double> scores = new ArrayList<>();
 
-        String[] values =
-                text.split(",");
+        String[] values = text.split(",");
 
         for (String value : values) {
 
             try {
 
-                double score =
-                        Double.parseDouble(
-                                value.trim()
-                        );
+                double score = Double.parseDouble(value.trim());
 
                 scores.add(score);
 
@@ -469,8 +446,7 @@ class Scores extends Thread {
         return scores;
     }
 
-    private double calculateAverage(
-            List<Double> scores) {
+    private double calculateAverage(List<Double> scores) {
 
         double sum = 0;
 
@@ -481,9 +457,7 @@ class Scores extends Thread {
         return sum / scores.size();
     }
 
-    private double calculateStandardDeviation(
-            List<Double> scores,
-            double average) {
+    private double calculateStandardDeviation(List<Double> scores, double average) {
 
         double sumSquares = 0;
 
@@ -491,9 +465,7 @@ class Scores extends Thread {
             sumSquares += score * score;
         }
 
-        double variance =
-                (sumSquares / scores.size())
-                        - (average * average);
+        double variance = (sumSquares / scores.size()) - (average * average);
 
         /*
          * Protects against tiny negative floating-point
@@ -510,16 +482,11 @@ class Scores extends Thread {
      * A score is an outlier when it is more than
      * 1.9 standard deviations away from the average.
      */
-    private List<Double> findOutliers(
-            List<Double> scores,
-            double average,
-            double standardDeviation) {
+    private List<Double> findOutliers(List<Double> scores, double average, double standardDeviation) {
 
-        List<Double> outliers =
-                new ArrayList<>();
+        List<Double> outliers = new ArrayList<>();
 
-        double limit =
-                1.9 * standardDeviation;
+        double limit = 1.9 * standardDeviation;
 
         for (double score : scores) {
 
@@ -531,29 +498,21 @@ class Scores extends Thread {
         return outliers;
     }
 
-    private String formatOutliers(
-            List<Double> outliers) {
+    private String formatOutliers(List<Double> outliers) {
 
         if (outliers.isEmpty()) {
             return "None";
         }
 
-        StringBuilder result =
-                new StringBuilder();
+        StringBuilder result = new StringBuilder();
 
-        for (int i = 0;
-             i < outliers.size();
-             i++) {
+        for (int i = 0; i < outliers.size(); i++) {
 
             if (i > 0) {
                 result.append(", ");
             }
 
-            result.append(
-                    formatNumber(
-                            outliers.get(i)
-                    )
-            );
+            result.append(formatNumber(outliers.get(i)));
         }
 
         return result.toString();
@@ -598,16 +557,11 @@ class Discover extends Thread {
     @Override
     public void run() {
 
-        String preliminaryPassword =
-                buildPreliminaryPassword(section);
+        String preliminaryPassword = buildPreliminaryPassword(section);
 
-        String password =
-                discoverPassword(
-                        preliminaryPassword
-                );
+        String password = discoverPassword(preliminaryPassword);
 
-        boolean valid =
-                isValidPassword(password);
+        boolean valid = isValidPassword(password);
 
         String output;
 
@@ -640,14 +594,11 @@ class Discover extends Thread {
         }
     }
 
-    private String buildPreliminaryPassword(
-            String text) {
+    private String buildPreliminaryPassword(String text) {
 
-        String[] tokens =
-                text.trim().split("\\s+");
+        String[] tokens = text.trim().split("\\s+");
 
-        StringBuilder password =
-                new StringBuilder();
+        StringBuilder password = new StringBuilder();
 
         for (String token : tokens) {
 
@@ -665,8 +616,7 @@ class Discover extends Thread {
                             ""
                     );
 
-            String lowercase =
-                    cleaned.toLowerCase();
+            String lowercase = cleaned.toLowerCase();
 
             /*
              * Step 1:
@@ -674,19 +624,16 @@ class Discover extends Thread {
              */
             if (NUMBER_WORDS.containsKey(lowercase)) {
 
-                cleaned =
-                        NUMBER_WORDS.get(lowercase);
+                cleaned = NUMBER_WORDS.get(lowercase);
             }
 
             if (cleaned.isEmpty()) {
                 continue;
             }
 
-            char first =
-                    cleaned.charAt(0);
+            char first = cleaned.charAt(0);
 
-            if ((first >= 'a' && first <= 'z')
-                    || Character.isDigit(first)) {
+            if ((first >= 'a' && first <= 'z') || Character.isDigit(first)) {
 
                 password.append(first);
             }
@@ -695,8 +642,7 @@ class Discover extends Thread {
         return password.toString();
     }
 
-    private String discoverPassword(
-            String preliminary) {
+    private String discoverPassword(String preliminary) {
 
         if (preliminary.length() < 6) {
             return preliminary;
@@ -711,8 +657,7 @@ class Discover extends Thread {
             return preliminary;
         }
 
-        String firstSix =
-                preliminary.substring(0, 6);
+        String firstSix = preliminary.substring(0, 6);
 
         if (isValidPassword(firstSix)) {
             return firstSix;
@@ -733,30 +678,25 @@ class Discover extends Thread {
     private boolean isValidPassword(
             String password) {
 
-        if (password == null
-                || password.length() != 6) {
+        if (password == null || password.length() != 6) {
             return false;
         }
 
-        char first =
-                password.charAt(0);
+        char first = password.charAt(0);
 
-        if (first < 'a'
-                || first > 'z') {
+        if (first < 'a' || first > 'z') {
             return false;
         }
 
         boolean containsDigit = false;
 
-        for (char c :
-                password.toCharArray()) {
+        for (char c : password.toCharArray()) {
 
             if (Character.isDigit(c)) {
 
                 containsDigit = true;
 
-            } else if (c < 'a'
-                    || c > 'z') {
+            } else if (c < 'a' || c > 'z') {
 
                 return false;
             }
