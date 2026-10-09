@@ -164,7 +164,8 @@ class Person extends Thread {
 
         Map<Character, String> fields = new HashMap<>();
 
-        Pattern markerPattern = Pattern.compile("(?<![A-Za-z])([FLMD])");
+        Pattern markerPattern =
+                Pattern.compile("(?<![A-Za-z])([FLMD])");
 
         Matcher matcher = markerPattern.matcher(text);
 
@@ -173,7 +174,23 @@ class Person extends Thread {
 
         while (matcher.find()) {
 
-            positions.add(matcher.start(1));
+            int position = matcher.start(1);
+
+            // Check the previous non-space character.
+            // If it is a comma, this letter is part of the date
+            // (for example, the M in "May").
+            int previous = position - 1;
+
+            while (previous >= 0
+                    && Character.isWhitespace(text.charAt(previous))) {
+                previous--;
+            }
+
+            if (previous >= 0 && text.charAt(previous) == ',') {
+                continue;
+            }
+
+            positions.add(position);
             markers.add(matcher.group(1).charAt(0));
         }
 
